@@ -39,15 +39,18 @@ def main():
     x = sepVideos(video, save=False, resize=(128,128))
     
     print(x.shape)
-    segnet = tf.keras.models.load_model('525.h5')
-    img, mask = test[7]
-    plt.imshow(img)
-    print(img.shape)
-    pred = segnet.predict(img.reshape(128,128,1)[tf.newaxis,...])
-    #print(pred.shape)
-    fig, (ax1, ax2) = plt.subplots(1, 2)
-    ax1.imshow(img)
-    ax2.imshow(pred.reshape(128,128))
+    segnet = tf.keras.models.load_model('2021-10-22_16-59-40model.h5')
+    
+    for i in range(test.shape[0]):
+        img, mask = test[i]
+        #plt.imshow(img)
+        print(img.shape)
+        pred = segnet.predict(img.reshape(128,128,1)[tf.newaxis,...])
+        #print(pred.shape)
+        fig, (ax1, ax2) = plt.subplots(1, 2)
+        ax1.imshow(img)
+        ax2.imshow(pred.reshape(128,128))
+        plt.show()
     
     size = 128, 128
     
@@ -78,7 +81,7 @@ def main2():
         
         print(x.shape)
         img = x[5]
-        segnet = tf.keras.models.load_model('525.h5')
+        segnet = tf.keras.models.load_model('2021-10-22_16-59-40model.h5')
         
         
         pred = segnet.predict(x.reshape(-1,128,128,1))
@@ -91,7 +94,7 @@ def main2():
         size = 128, 128
     
         fps = 10
-        out = cv2.VideoWriter(f'{video}_segmented.mp4', cv2.VideoWriter_fourcc(*'mp4v'), fps, (size[1], size[0]), False)
+        out = cv2.VideoWriter(f"{video.split('.')[0]}_segmented.mp4", cv2.VideoWriter_fourcc(*'mp4v'), fps, (size[1], size[0]), False)
         for i in range(pred.shape[0]):
             out.write(pred[i,:,:]*255)
             #fig, (ax1, ax2) = plt.subplots(1, 2)
