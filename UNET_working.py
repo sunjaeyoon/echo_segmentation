@@ -204,6 +204,8 @@ def DeeplabV3Plus(image_size, num_classes):
     return keras.Model(inputs=model_input, outputs=model_output)
 
 #------------------------------------------------------------------------------
+#CUSTOM CALLBACK 
+
 def display(display_list):
   plt.figure(figsize=(15, 15))
 
@@ -289,9 +291,12 @@ x = pred.reshape(-1,128,128)
 y = data.images[0]
 
 #plt.imshow(x*y)
+model_file = str(datetime.datetime.now()).split('.')[0].replace(' ', '_').replace(':','-')
+
 
 if save:
-    model.save(f'')
+    print("saving model in", model_file)
+    model.save(f"{model_file}model.h5")
 
 
 
