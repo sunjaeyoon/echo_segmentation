@@ -20,6 +20,14 @@ Limitations:
   
 ### File structure
 Data is expected to be within a folder called "mouse_heart"
+- mouse_heart/
+  - video1.avi
+  - video2.avi
+  - etc
+- Dataset.py
+- masks.py
+- videos.py
+- UNET_working.py
   
 # Python Code
 
