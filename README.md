@@ -24,7 +24,7 @@ Data is expected to be within a folder called "mouse_heart"
 # Python Code
 
 Files
-> videos.py
-> masks.py
-> Dataset.py
-> UNET_working.py (training)
+- videos.py
+- masks.py
+- Dataset.py
+- UNET_working.py (training)
