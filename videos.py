@@ -17,14 +17,24 @@ from skimage.transform import resize
 import tqdm
 import cv2
 
+input_folder = "./mouse_heart/"
+
 
 def get_Files(mypath:str = "mouse_heart", fileType:str='avi'):
     return [f for f in listdir(mypath) if isfile(join(mypath, f)) and f[-3:]==fileType]
 
 
-input_folder = "./mouse_heart/"
-
 def sepVideos(video:str, crop=[[107,492],[227,638]], resize=(256,256), save=True)->np.ndarray:
+    """"
+    Function will take a video file and returns np array of video
+    Inputs: 
+        file: input file
+        crop: [[x1,y1], [x2,y2]] defaults to [[107,492],[227,638]]
+        resize: tuple (width, height) defaults to (256,256)
+        save: bool defaults to true
+    
+    """
+    
     output = video.split(".")[0]
     videostack = None
     if not os.path.exists(output): 
@@ -49,10 +59,7 @@ def sepVideos(video:str, crop=[[107,492],[227,638]], resize=(256,256), save=True
         else:
             videostack = np.concatenate([videostack,img.reshape([1,img.shape[0],img.shape[1]])])                 
     return videostack
-                                         
-        
-                                                                                   
-                                                                                  
+                                        
                                                                                   
 if __name__ == "__main__":    
     videos = [f for f in os.listdir(input_folder) if os.path.isfile(input_folder+f) and f[-3:]=='avi']

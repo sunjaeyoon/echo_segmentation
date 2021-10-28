@@ -1,0 +1,9 @@
+ITEMS USED
+
+labelme and echonet have commands that arent global command
+use these commands instead
+
+Install using conda-forge -> no issues 
+labelme cmd = ""
+
+echonet cmd = "python -m echonet {arg}"

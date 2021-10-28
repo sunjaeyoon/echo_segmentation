@@ -10,12 +10,11 @@ from os import listdir
 from os.path import isfile, join, isdir
 import matplotlib.pyplot as plt
 import numpy as np
-import imageio
-from skimage.transform import resize
 import tqdm
 import cv2
 
-from mask import makeMaskJSON
+from mask import makeMaskJSON, makeWallMaskJSON
+from videos import sepVideos
 
 
 def get_Files(mypath:str = "mouse_heart", fileType:str='avi'):
@@ -52,10 +51,9 @@ class Dataset(object):
                 
                 for f in jsonFiles:
                     imgpath = os.path.join(self.datapath,folder,f.split('.')[0]+'.png')
-                    img = cv2.resize(plt.imread(imgpath).astype(np.float), resize, interpolation = cv2.INTER_AREA)
+                    img = cv2.resize(plt.imread(imgpath).astype(np.float64), resize, interpolation = cv2.INTER_AREA)
                     maskpath = os.path.join(self.datapath,folder,f)
-                    mask = cv2.resize(makeMaskJSON(maskpath).astype(np.float), resize, interpolation = cv2.INTER_AREA)
-                    
+                    mask = cv2.resize(makeWallMaskJSON(maskpath).astype(np.float32), resize, interpolation = cv2.INTER_AREA)
                 
                     if type(imgstack)!=np.ndarray:
                         imgstack = img.reshape([1,img.shape[0],img.shape[1]])
@@ -65,6 +63,7 @@ class Dataset(object):
                         imgstack = np.concatenate([imgstack,img.reshape([1,img.shape[0],img.shape[1]])])
                         maskstack = np.concatenate([maskstack, mask.reshape([1,img.shape[0],img.shape[1]])])
                         #print(imgstack.shape)
+            
                     
         #print(type(imgstack))
                 
@@ -73,18 +72,36 @@ class Dataset(object):
     def __getitem__(self, i):
         return self.images[i,:,:], self.labels[i,:,:]
     
-    def segmentVideo(self, file, model):
-        pass
+    def segmentVideo(self, video_file, model):
+        """
+        Inputs: video_file, model
         
- 
+        This function takes a video file and predicts the mask and creates
+        the segmented video
+        
+        """
+        
+        print(video_file)
+        print('Spliting', video_file, '...')
+        x = sepVideos(video_file, save=False, resize=(128,128))
+        
+        print(x.shape)
+        #segnet = tf.keras.models.load_model('2021-10-22_16-59-40model.h5')
+        
+        pred = model.predict(x.reshape(-1,128,128,1))
+        size = 128, 128
     
- 
-    
- 
+        fps = 10
+        out = cv2.VideoWriter(f"{video_file.split('.')[0]}_segmented.mp4", cv2.VideoWriter_fourcc(*'mp4v'), fps, (size[1], size[0]), False)
+        for i in range(pred.shape[0]):
+            out.write( (pred[i]*255).astype('uint8') )
+        out.release()
+
     
 def main():
     t = Dataset('.')
     
+    # Show all masks
     for j in range(t.shape[0]):
         plt.figure(figsize=(15, 15))
         
@@ -100,3 +117,4 @@ def main():
 # TEST CODE
 if __name__ == '__main__':
     main()
+    
