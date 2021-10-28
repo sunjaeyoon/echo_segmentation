@@ -28,7 +28,12 @@ def get_Folders(path = '.', keyword = None):
 
 class Dataset(object):
     def __init__(self, path):
+        """
+        Initialization requires the path of the frames and labels
+        Input:
+            path
         
+        """
         self.datapath = path 
         self.images, self.labels = self.getData()
         self.shape = self.images.shape
@@ -99,6 +104,7 @@ class Dataset(object):
 
     
 def main():
+    
     t = Dataset('.')
     
     # Show all masks
