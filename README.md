@@ -39,4 +39,11 @@ Files
 
 # Videos
 
-![Segmented Video] https://github.com/sunjaeyoon/echo_segmentation/blob/main/example/images/segmentation.mp4
+
+https://user-images.githubusercontent.com/39254058/146311825-0ae2b9b0-0a97-40d7-a12d-a64ba4b58b83.mp4
+
+
+
+
+https://user-images.githubusercontent.com/39254058/146311861-7e031b05-9cd8-4ae6-b3be-4630f442df75.mp4
+
