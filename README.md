@@ -36,3 +36,7 @@ Files
 - masks.py
 - Dataset.py
 - UNET_working.py (training)
+
+# Videos
+
+![Segmented Video] https://github.com/sunjaeyoon/echo_segmentation/blob/main/example/images/segmentation.mp4
